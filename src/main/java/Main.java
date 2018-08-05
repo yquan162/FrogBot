@@ -9,9 +9,9 @@ import javax.security.auth.login.LoginException;
 
 public class Main extends ListenerAdapter {
 
-    String message;
-    MessageChannel channel;
-    User user;
+    private String message;
+    private MessageChannel channel;
+    private User user;
 
     public static void main(String[] args) throws LoginException {
         JDABuilder builder = new JDABuilder(AccountType.BOT);
@@ -36,15 +36,19 @@ public class Main extends ListenerAdapter {
             echo(event);
         else if (message.substring(0, 5).equals("-kick"))
             kick(event);
+        else if (message.substring(0, 4).equals("-ban"))
+            ban(event);
     }
 
     private void help(MessageReceivedEvent event) {
         event.getChannel().sendMessage("```\n" +
                 "Command List\n" +
-                "$help - Display this list\n" +
-                "$ping - Ping the bot\n" +
-                "$echo - Echo the user's input\n" +
+                "-help - Display this list\n" +
+                "-ping - Ping the bot\n" +
+                "-echo - Echo the user's input\n" +
                 "\t(Optional parameter -h deletes original command)\n" +
+                "-kick - Kick a user\n" +
+                "-ban - Ban a user\n" +
                 "```").queue();
     }
 
@@ -62,10 +66,19 @@ public class Main extends ListenerAdapter {
 
     private void kick(MessageReceivedEvent event) {
         if(!event.getMessage().getMember().hasPermission((Permission.KICK_MEMBERS))) {
-            event.getChannel().sendMessage("Nice try, " + event.getAuthor().getAsMention());
+            event.getChannel().sendMessage("Nice try, " + event.getAuthor().getAsMention()).queue();
         } else {
             event.getGuild().getController().kick(event.getMessage().getMentionedMembers().get(0)).queue();
-            event.getChannel().sendMessage("K");
+            event.getChannel().sendMessage("K").queue();
+        }
+    }
+
+    private void ban(MessageReceivedEvent event) {
+        if(!event.getMessage().getMember().hasPermission((Permission.BAN_MEMBERS))) {
+            event.getChannel().sendMessage("Nice try, " + event.getAuthor().getAsMention()).queue();
+        } else {
+            event.getGuild().getController().ban(event.getMessage().getMentionedMembers().get(0), 0).queue();
+            event.getChannel().sendMessage("K").queue();
         }
     }
 
