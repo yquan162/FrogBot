@@ -39,6 +39,7 @@ public class Main extends ListenerAdapter {
         event.getChannel().sendMessage("```\n" +
                 "Command List\n" +
                 "$help - Display this list\n" +
+                "$ping - Ping the bot\n" +
                 "$echo - Echo the user's input\n" +
                 "\t(Optional parameter -h deletes original command)\n" +
                 "```").queue();
