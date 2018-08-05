@@ -1,5 +1,6 @@
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -33,6 +34,8 @@ public class Main extends ListenerAdapter {
             ping(event);
         else if (message.substring(0, 5).equals("$echo"))
             echo(event);
+        else if (message.substring(0, 5).equals("kick"))
+            kick(event);
     }
 
     private void help(MessageReceivedEvent event) {
@@ -55,6 +58,15 @@ public class Main extends ListenerAdapter {
             event.getChannel().sendMessage(message.substring(9)).queue();
         } else
             event.getChannel().sendMessage(message.substring(6)).queue();
+    }
+
+    private void kick(MessageReceivedEvent event) {
+        if(!event.getMessage().getMember().hasPermission((Permission.KICK_MEMBERS))) {
+            event.getChannel().sendMessage("Nice try, " + event.getAuthor().getAsMention());
+        } else {
+            event.getGuild().getController().kick(event.getMessage().getMentionedMembers().get(0)).queue();
+            event.getChannel().sendMessage("K");
+        }
     }
 
 }
