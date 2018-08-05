@@ -16,10 +16,13 @@ public class Main extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         String message = event.getMessage().getContentRaw();
-        if (event.getAuthor().isBot())
+        MessageChannel channel = event.getChannel();
+        User user = event.getAuthor();
+        
+        if (user.isBot())
             return;
         else if (message.equals("$ping"))
-            event.getChannel().sendMessage("pong").queue();
+            channel.sendMessage("pong").queue();
         else if (message.equals("$help"))
             help(event);
         else if (message.substring(0, 5).equals("$echo"))
