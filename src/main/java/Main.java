@@ -1,10 +1,16 @@
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import javax.security.auth.login.LoginException;
 
 public class Main extends ListenerAdapter {
+
+    String message;
+    MessageChannel channel;
+    User user;
 
     public static void main(String[] args) throws LoginException {
         JDABuilder builder = new JDABuilder(AccountType.BOT);
@@ -15,16 +21,16 @@ public class Main extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        String message = event.getMessage().getContentRaw();
-        MessageChannel channel = event.getChannel();
-        User user = event.getAuthor();
-        
+        message = event.getMessage().getContentRaw();
+        channel = event.getChannel();
+        user = event.getAuthor();
+
         if (user.isBot())
             return;
-        else if (message.equals("$ping"))
-            channel.sendMessage("pong").queue();
         else if (message.equals("$help"))
             help(event);
+        else if (message.equals("$ping"))
+            ping(event);
         else if (message.substring(0, 5).equals("$echo"))
             echo(event);
     }
@@ -38,9 +44,11 @@ public class Main extends ListenerAdapter {
                 "```").queue();
     }
 
-    private void echo(MessageReceivedEvent event) {
-        String message = event.getMessage().getContentRaw();
+    private void ping(MessageReceivedEvent event) {
+        event.getChannel().sendMessage("pong").queue();
+    }
 
+    private void echo(MessageReceivedEvent event) {
         if (message.substring(6, 8).equals("-h")) {
             event.getMessage().delete().queue();
             event.getChannel().sendMessage(message.substring(9)).queue();
