@@ -34,7 +34,7 @@ public class Main extends ListenerAdapter {
             ping(event);
         else if (message.substring(0, 5).equals("$echo"))
             echo(event);
-        else if (message.substring(0, 5).equals("kick"))
+        else if (message.substring(0, 5).equals("$kick"))
             kick(event);
     }
 
