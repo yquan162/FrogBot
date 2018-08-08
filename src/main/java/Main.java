@@ -15,7 +15,7 @@ public class Main extends ListenerAdapter {
 
     public static void main(String[] args) throws LoginException {
         JDABuilder builder = new JDABuilder(AccountType.BOT);
-        builder.setToken(System.getenv("FrogDiscordToken"));
+        builder.setToken(System.getenv("YichengDiscordToken"));
         builder.addEventListener(new Main());
         builder.buildAsync();
     }

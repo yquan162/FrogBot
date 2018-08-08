@@ -6,7 +6,7 @@ plugins {
 
 mainClassName = "Main"
 
-group 'io.github.potatocurry'
+group 'io.github.yquan162'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
